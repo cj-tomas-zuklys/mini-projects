@@ -47,7 +47,7 @@
 	<!-- Miscellaneous other checks. -->
 	<!-- See http://checkstyle.sf.net/config_misc.html -->
 	<module name="RegexpSingleline">
-		<property name="format" value="/s+$" />
+		<property name="format" value="\s+$" />
 		<property name="minimum" value="0" />
 		<property name="maximum" value="0" />
 		<property name="message" value="Line has trailing spaces." />
@@ -154,7 +154,6 @@
 
 	<module name="SuppressionFilter">
 		<property name="file" value="${config_loc}/suppressions.xml" />
-		<property name="optional" value="false" />
 	</module>
 
 </module>

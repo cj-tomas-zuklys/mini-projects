@@ -32,6 +32,16 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
 			<version>${version.org.apache.cxf}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.xml.bind</groupId>
+					<artifactId>jaxb-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.xml.bind</groupId>
+					<artifactId>jaxb-impl</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Spring -->
@@ -45,18 +55,8 @@
 			<artifactId>spring-context</artifactId>
 			<version>${version.org.springframework}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${version.org.springframework}</version>
-		</dependency>
-
+		
 		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${version.org.slf4j}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -83,7 +83,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${version.org.projectlombok}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -94,6 +94,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>soapws-topdown</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -146,6 +147,8 @@
 					<includeTestResources>false</includeTestResources>
 					<logViolationsToConsole>true</logViolationsToConsole>
 					<configLocation>${basedir}/../checkstyle/codinginaction.checkstyle.xml</configLocation>
+					<suppressionsLocation>${basedir}/../checkstyle/suppressions.xml</suppressionsLocation>
+					<propertyExpansion>config_loc=${basedir}/../checkstyle/</propertyExpansion>
 					<encoding>UTF-8</encoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>

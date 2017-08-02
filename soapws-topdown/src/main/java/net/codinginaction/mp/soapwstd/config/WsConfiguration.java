@@ -25,7 +25,7 @@ public class WsConfiguration {
 	public SpringBus springBus() {
 		return new SpringBus();
 	}
-	
+
 	@Bean
 	public Endpoint endpoint() {
 		EndpointImpl endpoint = new EndpointImpl(springBus(), new GreeterImpl());
