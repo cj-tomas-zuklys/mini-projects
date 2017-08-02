@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+	<Properties>
+		<Property name="basePath">d:/logs/tomcat/logs</Property>
+		<Property name="informativePattern">%d{yyyy.MM.dd HH:mm:ss,SSS} %5p [%t] %c{1} - %X{requestId} %X{id}. %m%n</Property>
+	</Properties>
+
+	<Appenders>
+		<RollingFile name="baseLogger" fileName="${basePath}/server.log"
+			filePattern="${basePath}/server-%i.log">
+			<PatternLayout>
+				<pattern>${informativePattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="2" />
+		</RollingFile>
+
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>${informativePattern}</pattern>
+			</PatternLayout>
+		</Console>
+		<RollingFile name="soapws-topdown-mainlog" fileName="${basePath}/soapws-topdown/soapws-topdown.log"
+			filePattern="${basePath}/soapws-topdown/soapws-topdown-%i.log">
+			<PatternLayout>
+				<pattern>${informativePattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="2" />
+		</RollingFile>
+		<RollingFile name="soapws-topdown-eventlog" fileName="${basePath}/soapws-topdown/soapws-topdown-eventlog.log"
+			filePattern="${basePath}/soapws-topdown/soapws-topdown-events-%d{yyyy-MM-ddHH}.log.gz">
+			<PatternLayout>
+				<pattern>%d{yyyy.MM.dd HH:mm:ss.SSS},%X{id},%m%n</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy max="2">
+				<Delete basePath="${basePath}/soapws-topdown/" maxDepth="2">
+					<IfFileName glob="soapws-topdown-events-????-??-????*.log.gz">
+						<IfAny>
+							<IfLastModified age="PT2H" />
+							<IfAccumulatedFileSize exceeds="100 MB" />
+						</IfAny>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="net.codinginaction" level="trace" additivity="true">
+			<appender-ref ref="soapws-topdown-mainlog" />
+		</Logger>
+		<Logger name="net.codinginaction.eventlog" level="info" additivity="true">
+			<appender-ref ref="soapws-topdown-eventlog" />
+		</Logger>
+		<Root level="error" additivity="true">
+			<appender-ref ref="console" />
+			<appender-ref ref="baseLogger" />
+		</Root>
+	</Loggers>
+</Configuration>
