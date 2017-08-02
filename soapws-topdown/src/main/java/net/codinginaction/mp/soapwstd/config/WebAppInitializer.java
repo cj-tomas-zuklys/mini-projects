@@ -9,8 +9,12 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.apache.cxf.transport.servlet.CXFServlet;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import lombok.extern.slf4j.Slf4j;
 import net.codinginaction.mp.soapwstd.filters.ProcessingTimeFilter;
@@ -18,32 +22,26 @@ import net.codinginaction.mp.soapwstd.filters.RequestLoggingFilter;
 import net.codinginaction.mp.soapwstd.filters.RequestTrackingFilter;
 
 @Slf4j
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebAppInitializer implements WebApplicationInitializer {
 
 	private static final String DEFAULT_SPRING_PROFILE = "dev";
 
 	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return null;
-	}
-
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] {WsConfiguration.class};
-	}
-
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] {"/"};
-	}
-
-	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		log.info("onStartup. ");
-		super.onStartup(servletContext);
 		String profile = getActiveProfile();
 		servletContext.setInitParameter("spring.profiles.active", profile);
+		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+		context.register(WsConfiguration.class);
+		servletContext.addListener(new ContextLoaderListener(context));
 		registerFilters(servletContext);
+		registerServlets(servletContext);
+	}
+
+	private void registerServlets(ServletContext servletContext) {
+		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("soapws-topdown-servlet", new CXFServlet());
+		dispatcher.setLoadOnStartup(1);
+		dispatcher.addMapping("/ws/*");
 	}
 
 	private void registerFilters(ServletContext servletContext) {
