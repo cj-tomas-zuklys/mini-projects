@@ -18,6 +18,7 @@
 		<version.org.slf4j>1.7.25</version.org.slf4j>
 		<version.org.projectlombok>1.16.18</version.org.projectlombok>
 		<version.org.apache.logging.log4j>2.8.2</version.org.apache.logging.log4j>
+		<version.javax.servlet>3.1.0</version.javax.servlet>
 	</properties>
 
 	<dependencies>
@@ -88,7 +89,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<version>${version.javax.servlet}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
