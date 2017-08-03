@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+	<Properties>
+		<Property name="basePath">d:/logs/tomcat/logs</Property>
+		<Property name="informativePattern">%d{yyyy.MM.dd HH:mm:ss,SSS} %5p [%t] %c{1} - %X{requestId} %X{id}. %m%n</Property>
+	</Properties>
+
+	<Appenders>
+		<RollingFile name="baseLogger" fileName="${basePath}/server.log"
+			filePattern="${basePath}/server-%i.log">
+			<PatternLayout>
+				<pattern>${informativePattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="2" />
+		</RollingFile>
+
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>${informativePattern}</pattern>
+			</PatternLayout>
+		</Console>
+		<RollingFile name="soapws-bottomup-mainlog" fileName="${basePath}/soapws-bottomup/soapws-bottomup.log"
+			filePattern="${basePath}/soapws-bottomup/soapws-bottomup-%i.log">
+			<PatternLayout>
+				<pattern>${informativePattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="2" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="net.codinginaction" level="trace" additivity="true">
+			<appender-ref ref="soapws-bottomup-mainlog" />
+		</Logger>
+		<Root level="error" additivity="true">
+			<appender-ref ref="console" />
+			<appender-ref ref="baseLogger" />
+		</Root>
+	</Loggers>
+</Configuration>
