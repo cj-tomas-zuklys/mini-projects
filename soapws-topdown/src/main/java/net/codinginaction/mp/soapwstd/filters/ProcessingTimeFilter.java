@@ -17,7 +17,7 @@ public class ProcessingTimeFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		log.info("debug");
+		log.info("info");
 	}
 
 	@Override
