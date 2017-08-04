@@ -69,9 +69,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public void updateUser(@PathVariable("id") Long id, @RequestBody @Validated User user) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody @Validated User user) {
         log.debug("updateUser. id: {}", id);
         userService.updateUser(id, user);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
