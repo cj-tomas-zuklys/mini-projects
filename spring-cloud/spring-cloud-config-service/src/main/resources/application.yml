@@ -1,0 +1,13 @@
+server:
+  port: 8888
+
+management:
+  security:
+    enabled: false
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: D:\Home\tomas\projects\MySideProjects\SpringCloud\development\bootiful-microservices-config
